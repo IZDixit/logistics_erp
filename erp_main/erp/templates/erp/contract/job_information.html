@@ -5,7 +5,6 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<<<<<<< HEAD
 
     <!-- We will now add buttons that will reference the modals of container_details, loose_cargo_details, and supplier_information. -->
     <div class="card mt-4">
@@ -22,19 +21,14 @@
             </div>
         </div>
     </div>
-                    
-=======
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
+    <br>              
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
 
                     <h5 class="card-title">Job Information</h5>
-<<<<<<< HEAD
                     <p class="card-text">Please fill out the form below to create a new job.</p>
-=======
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
@@ -84,12 +78,9 @@
                      {% include 'erp/contract/modals/add_cargo_classification_modal.html' %}
                      {% include 'erp/contract/modals/add_cargo_type_modal.html' %}
                      {% include 'erp/contract/modals/add_client_modal.html' %}
-<<<<<<< HEAD
                      {% include 'erp/contract/modals/add_container_details_modal.html' %}
                      {% include 'erp/contract/modals/add_loose_cargo_details_modal.html' %}
                      {% include 'erp/contract/modals/add_supplier_information_modal.html' %}
-=======
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
                      
                 </div>        
             </div>

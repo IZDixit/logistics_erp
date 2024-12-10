@@ -1,0 +1,59 @@
+<!-- templates/navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-center">
+    <a class="navbar-brand main-heading" href="{% url '' %}">
+        &nbsp; TRAKANA (Operations Dashboard)
+    </a>
+    
+    <button class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+  
+    <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+  
+        
+        <ul class="navbar-nav mr-auto">
+  
+  
+          &nbsp;     &nbsp;     &nbsp;
+        <!-- Show these links to all users -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url '' %}">Dashboard &nbsp; <i class="fa fa-home" aria-hidden="true"></i> </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="OperationsMasterDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Master (Update Master Files) &nbsp; <i class="fa fa-users" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="OperationsMasterDropdown">
+            <a class="dropdown-item" href="{% url 'cargo_classification' %}"> Cargo Classification </a>
+            <a class="dropdown-item" href="{% url 'cargo_type' %}"> Cargo Type </a>
+            <a class="dropdown-item" href="{% url 'client' %}"> Client </a>
+            <a class="dropdown-item" href="{% url 'from_location' %}"> From Location </a>
+            <a class="dropdown-item" href="{% url 'to_location' %}"> To Location </a>
+            <a class="dropdown-item" href="{% url 'route' %}"> Route </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="OperationsContractDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Create Contract &nbsp; <i class="fa fa-users" aria-hidden="true"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="OperationsContractDropdown">
+              <a class="dropdown-item" href="{% url 'job_information' %}"> Job Information </a>
+              <a class="dropdown-item" href="{% url 'supplier_information' %}"> Supplier Information </a>
+              <a class="dropdown-item" href="{% url 'container_details' %}"> Container Details </a>
+              <a class="dropdown-item" href="{% url 'loose_cargo_information' %}"> Loose Cargo </a>
+            </div>
+          </li>
+      </ul>
+
+
+      </ul>
+    </div>
+  </nav>

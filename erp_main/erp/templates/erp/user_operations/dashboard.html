@@ -1,0 +1,25 @@
+<!--Create dashboard that Extends the base.html file and Displays a welcome greeting to "TRAKANA Operations Officer"-->
+{% extends 'erp/user_operations/base.html' %}
+
+{% block content %}
+
+    <body>
+        <br>
+        <br>
+
+        <div class="text-center">
+
+            <h3> Welcome. </h3>
+
+            <br>
+
+            <h5> Operations Dashboard </h5>
+
+            <hr>
+
+            <br>
+            <a class="btn btn-primary" type="button" href="{% url '' %}"> Access Your Operations Dashboard &nbsp; <i class="fa fa-user-plus" aria-hidden="true"></i></a>
+        </div>
+    </body>
+
+{% endblock %}
