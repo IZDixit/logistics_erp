@@ -1,0 +1,27 @@
+{% load crispy_forms_tags %}
+
+<!-- erp_main/erp/templates/erp/contract/modals/add_client_modal.html -->
+<div class="modal fade" id="AddClientModal" tabindex="-1" role="dialog" aria-labelledby="AddClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddClientModalLabel">Add Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'client' %}">
+                    {% csrf_token %}
+                    {{ client_form|crispy }}
+                    <button type="submit" class="btn btn-primary">Add Client</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+

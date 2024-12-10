@@ -1,0 +1,23 @@
+<!-- templates/cargo_type.html -->
+{% extends 'erp/master/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Add Cargo Type</h1>
+  <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Add Cargo Type</button>
+  </form>
+
+  <h2 class="mt-4">Existing Cargo Types</h2>
+  <ul class="list-group">
+      {% for cargo_type in cargo_types %}
+          <li class="list-group-item">{{ cargo_type.name }}</li>
+      {% empty %}
+          <li class="list-group-item">No cargo types available.</li>
+      {% endfor %}
+  </ul>
+</div>
+{% endblock %}

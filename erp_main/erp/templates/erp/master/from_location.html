@@ -1,0 +1,23 @@
+<!-- templates/from_location.html -->
+{% extends 'erp/master/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Add From: Location</h1>
+  <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Add From: Location</button>
+  </form>
+
+  <h2 class="mt-4">Existing From Locations</h2>
+  <ul class="list-group">
+      {% for from_ in from_location %}
+          <li class="list-group-item">{{ from_.name }}</li>
+      {% empty %}
+          <li class="list-group-item">No From: Location available.</li>
+      {% endfor %}
+  </ul>
+</div>
+{% endblock %}

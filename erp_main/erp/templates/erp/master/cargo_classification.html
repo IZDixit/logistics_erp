@@ -1,0 +1,24 @@
+<!-- templates/cargo_classification.html -->
+{% extends 'erp/master/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Add Cargo Classification</h1>
+  <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Add Cargo Classification</button>
+  </form>
+
+  <h2 class="mt-4">Existing Cargo Classifications</h2>
+  <ul class="list-group">
+      {% for cargo_classification in cargo_classifications %}
+          <li class="list-group-item">{{ cargo_classification.name }}</li>
+      {% empty %}
+          <li class="list-group-item">No Cargo Classifications available.</li>
+      {% endfor %}
+  </ul>
+</div>
+{% endblock %}

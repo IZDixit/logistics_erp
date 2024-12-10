@@ -1,0 +1,23 @@
+<!-- templates/client.html -->
+{% extends 'erp/master/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Add Client</h1>
+  <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Add Client</button>
+  </form>
+
+  <h2 class="mt-4">Existing Clients</h2>
+  <ul class="list-group">
+      {% for client in clients %}
+          <li class="list-group-item">{{ client.name }}</li>
+      {% empty %}
+          <li class="list-group-item">No clients available.</li>
+      {% endfor %}
+  </ul>
+</div>
+{% endblock %}
