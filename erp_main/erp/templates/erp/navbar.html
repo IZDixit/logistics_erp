@@ -1,0 +1,84 @@
+<!-- templates/navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-center">
+    <a class="navbar-brand main-heading" href="{% url '' %}">
+        &nbsp; TRAKANA
+    </a>
+    
+    <button class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+  
+    <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+  
+        
+        <ul class="navbar-nav mr-auto">
+  
+  
+          &nbsp;     &nbsp;     &nbsp;
+        <!-- Show these links to all logged-in users -->
+        {% if user.is_authenticated %}
+          <!-- Conditional links based on user type -->
+          {% if user.userprofile.user_type == 'manager' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url '' %}">Dashboard &nbsp; <i class="fa fa-home" aria-hidden="true"></i> </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="customerCenterDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Customer Center &nbsp; <i class="fa fa-users" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="customerCenterDropdown">
+                <a class="dropdown-item" href="{% url '' %}"> Approve Users </a>
+                <a class="dropdown-item" href="{% url '' %}"> Approved Users </a>
+                <a class="dropdown-item" href="{% url '' %}">Cancelled Approvals</a>
+              </div>
+            </li>
+          {% elif user.userprofile.user_type == 'supervisor' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url '' %}">Dashboard &nbsp; <i class="fa fa-home" aria-hidden="true"></i> </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url '' %}">Customer Orders &nbsp; </a>
+            </li>
+          {% elif user.userprofile.user_type == 'customer' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url '' %}">Dashboard &nbsp; <i class="fa fa-home" aria-hidden="true"></i> </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url '' %}">My Orders &nbsp; </a>
+            </li>
+          {% endif %}
+  
+        {% else %}
+          <!-- Links for unauthenticated users -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url '' %}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url '' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+
+  
+      <!-- Right side of the navbar -->
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+            &nbsp;     &nbsp;     &nbsp; 
+  
+            <li class="nav-item">
+              <a class="nav-link" href="{% url '' %}">Sign out &nbsp; <i class="fa fa-sign-out" aria-hidden="true"></i> </a>  
+            </li>
+        {% endif %}
+
+
+      </ul>
+    </div>
+  </nav>

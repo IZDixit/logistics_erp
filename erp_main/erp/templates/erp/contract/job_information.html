@@ -1,0 +1,69 @@
+<!-- Using the crispy forms and extending from base.html in the base.html file in the current directory -->
+<!-- erp_main/erp/templates/erp/contract/job_information.html -->
+{% extends 'erp/contract/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <h5 class="card-title">Job Information</h5>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <br>
+                        <button type="submit" class="btn btn-success">Submit Job Information</button>
+                    </form>
+
+                    <!-- Buttons to Trigger modals -->
+                     <div class="card mt-4">
+                        <div class="card-header">
+                            Edit your Master Data
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddRouteModal">Add Route</button>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddToLocationModal">Add To: Location</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddFromLocationModal">Add From: Location</button>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoClassificationModal">Add Cargo Classification</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoTypeModal">Add Cargo Type</button>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddClientModal">Add Client</button>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+
+                     <!--Modals for each model-->
+                     {% include 'erp/contract/modals/add_route_modal.html' %}
+                     {% include 'erp/contract/modals/add_to_location_modal.html' %}
+                     {% include 'erp/contract/modals/add_from_location_modal.html' %}
+                     {% include 'erp/contract/modals/add_cargo_classification_modal.html' %}
+                     {% include 'erp/contract/modals/add_cargo_type_modal.html' %}
+                     {% include 'erp/contract/modals/add_client_modal.html' %}
+                     
+                </div>        
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
