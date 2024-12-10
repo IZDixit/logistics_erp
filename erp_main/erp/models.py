@@ -110,59 +110,59 @@ class Job_Information(models.Model):
     #Offloading Point should be char.
     offloading_point = models.CharField(max_length=100)
 
-    # <----------------------- XXXXXXXXXXX -------------------------->
-    # We are creating a model named Supplier Information with the following fields:
-    # File Ref No, Consignor, Consignee
-    class Supplier_Information(models.Model):
-        # File Ref No should be char.
-        file_ref_no = models.CharField(max_length=100)
-        # Consignor should be char.
-        consignor = models.CharField(max_length=100)
-        # Consignee should be char.
-        consignee = models.CharField(max_length=100)
+# <----------------------- XXXXXXXXXXX -------------------------->
+# We are creating a model named Supplier Information with the following fields:
+# File Ref No, Consignor, Consignee
+class Supplier_Information(models.Model):
+    # File Ref No should be char.
+    file_ref_no = models.CharField(max_length=100)
+    # Consignor should be char.
+    consignor = models.CharField(max_length=100)
+    # Consignee should be char.
+    consignee = models.CharField(max_length=100)
 
-    # <----------------------- XXXXXXXXXXX -------------------------->
-    # We are creating a model named Loose Cargo Information with the following fields:
-    # Cargo Classification, Make, Chasis No, Truck Planned, Model, MTN, Engine No, Commodity, No. of Packages, Invoice No.
-    class Loose_Cargo_Information(models.Model):
-        # Cargo Classification should be char.
-        cargo_classification = models.CharField(max_length=100)
-        # Make should be char.
-        make = models.CharField(max_length=100)
-        # Chasis No should be char.
-        chasis_no = models.CharField(max_length=100)
-        # Truck Planned should be char.
-        truck_planned = models.CharField(max_length=100)
-        # Model should be char.
-        model = models.CharField(max_length=100)
-        # MTN should be int.
-        mtn = models.IntegerField()
-        # Engine No should be char.
-        engine_no = models.CharField(max_length=100)
-        # Commodity should be char.
-        commodity = models.CharField(max_length=100)
-        # No. of Packages should be int.
-        no_of_packages = models.IntegerField()
-        # Invoice No should be char.
-        invoice_no = models.CharField(max_length=100)
+# <----------------------- XXXXXXXXXXX -------------------------->
+# We are creating a model named Loose Cargo Information with the following fields:
+# Cargo Classification, Make, Chasis No, Truck Planned, Model, MTN, Engine No, Commodity, No. of Packages, Invoice No.
+class Loose_Cargo_Information(models.Model):
+    # Cargo Classification should be char.
+    cargo_classification = models.CharField(max_length=100)
+    # Make should be char.
+    make = models.CharField(max_length=100)
+    # Chasis No should be char.
+    chasis_no = models.CharField(max_length=100)
+    # Truck Planned should be char.
+    truck_planned = models.CharField(max_length=100)
+    # Model should be char.
+    model = models.CharField(max_length=100)
+    # MTN should be int.
+    mtn = models.IntegerField()
+    # Engine No should be char.
+    engine_no = models.CharField(max_length=100)
+    # Commodity should be char.
+    commodity = models.CharField(max_length=100)
+    # No. of Packages should be int.
+    no_of_packages = models.IntegerField()
+    # Invoice No should be char.
+    invoice_no = models.CharField(max_length=100)
 
-    # <----------------------- XXXXXXXXXXX -------------------------->
-    # We are creating a model named Container Details with the following fields:
-    # Container Type, Container No, Truck Planned, MTN, Commodity, No. of Packages, Seal No., Invoice No.
-    class Container_Details(models.Model):
-        # Container Type should be char.        
-        container_type = models.CharField(max_length=100)
-        # Container No should be char.
-        container_no = models.CharField(max_length=100)
-        # Truck Planned should be char.        
-        truck_planned = models.CharField(max_length=100)
-        # MTN should be int.
-        mtn = models.IntegerField()
-        # Commodity should be char.
-        commodity = models.CharField(max_length=100)
-        # No. of Packages should be int.
-        no_of_packages = models.IntegerField()
-        # Seal No. should be char.
-        seal_no = models.CharField(max_length=100)
-        # Invoice No should be char.
-        invoice_no = models.CharField(max_length=100)
+# <----------------------- XXXXXXXXXXX -------------------------->
+# We are creating a model named Container Details with the following fields:
+# Container Type, Container No, Truck Planned, MTN, Commodity, No. of Packages, Seal No., Invoice No.
+class Container_Details(models.Model):
+    # Container Type should be char.        
+    container_type = models.CharField(max_length=100)
+    # Container No should be char.
+    container_no = models.CharField(max_length=100)
+    # Truck Planned should be char.        
+    truck_planned = models.CharField(max_length=100)
+    # MTN should be int.
+    mtn = models.IntegerField()
+    # Commodity should be char.
+    commodity = models.CharField(max_length=100)
+    # No. of Packages should be int.
+    no_of_packages = models.IntegerField()
+    # Seal No. should be char.
+    seal_no = models.CharField(max_length=100)
+    # Invoice No should be char.
+    invoice_no = models.CharField(max_length=100)

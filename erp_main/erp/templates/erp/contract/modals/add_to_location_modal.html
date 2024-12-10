@@ -6,15 +6,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="AddToLocationModalLabel">Add To: Location</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>
+                </button> -->
             </div>
             <div class="modal-body">
                 <form method="POST" action="{% url 'to_location' %}">
                     {% csrf_token %}
                     {{ to_location_form|crispy }}
-                    <button type="submit" class="btn btn-primary">Add To: Location</button>
+                    <!-- <button type="submit" class="btn btn-primary">Add To: Location</button> -->
                 </form>
             </div>
             <div class="modal-footer">

@@ -5,12 +5,30 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+
+    <!-- We will now add buttons that will reference the modals of container_details, loose_cargo_details, and supplier_information. -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Edit your Container, Loose Cargo, and Supplier Details Data
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddContainerDetailsModal">Update Container Details</button>
+                    <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddLooseCargoDetailsModal">Update Loose Cargo Details</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#AddSupplierInformationModal">Update Supplier Information</button>
+                </div>
+            </div>
+        </div>
+    </div>
+                    
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
 
                     <h5 class="card-title">Job Information</h5>
+                    <p class="card-text">Please fill out the form below to create a new job.</p>
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
@@ -60,6 +78,9 @@
                      {% include 'erp/contract/modals/add_cargo_classification_modal.html' %}
                      {% include 'erp/contract/modals/add_cargo_type_modal.html' %}
                      {% include 'erp/contract/modals/add_client_modal.html' %}
+                     {% include 'erp/contract/modals/add_container_details_modal.html' %}
+                     {% include 'erp/contract/modals/add_loose_cargo_details_modal.html' %}
+                     {% include 'erp/contract/modals/add_supplier_information_modal.html' %}
                      
                 </div>        
             </div>
