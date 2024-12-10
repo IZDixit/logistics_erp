@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Job_Information, File_Ref_No, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route
+<<<<<<< HEAD
 from .forms import Job_InformationForm, Supplier_InformationForm, Loose_Cargo_InformationForm, Container_DetailsForm,File_Ref_NoForm, ClientForm, Cargo_TypeForm, Cargo_ClassificationForm, From_LocationForm, To_LocationForm, RouteForm
+=======
+from .forms import Job_InformationForm, File_Ref_NoForm, ClientForm, Cargo_TypeForm, Cargo_ClassificationForm, From_LocationForm, To_LocationForm, RouteForm
+>>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
 
 # Create your views here.
 def home(request):
@@ -25,7 +29,11 @@ def job_information(request):
     cargo_type_form = Cargo_TypeForm()
     client_form = ClientForm()
     
+<<<<<<< HEAD
     # jobinfo = Job_Information.objects.all()
+=======
+
+>>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
     context = {'form': form,
                'route_form': route_form,
                'from_location_form': from_location_form,
@@ -33,6 +41,7 @@ def job_information(request):
                'cargo_classification_form': cargo_classification_form,
                'cargo_type_form': cargo_type_form,
                'client_form': client_form,
+<<<<<<< HEAD
                'supplier_information_form': Supplier_InformationForm,
                'loose_cargo_Information_form': Loose_Cargo_InformationForm,
                'container_details_form': Container_DetailsForm
@@ -84,6 +93,10 @@ def container_details(request):
     return render(request, 'erp/master/container_details.html', context=context)
 
 
+=======
+               }
+    return render(request, 'erp/contract/job_information.html', context=context)
+>>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
 def file_ref_no(request):
     if request.method == 'POST':
         form = File_Ref_NoForm(request.POST)

@@ -1,6 +1,10 @@
  # We will now use all the fields in the Job_Information model, in models.py        
 from django import forms
+<<<<<<< HEAD
 from .models import Job_Information, Supplier_Information, Loose_Cargo_Information, Container_Details,File_Ref_No, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route
+=======
+from .models import Job_Information, File_Ref_No, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route
+>>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Fieldset, HTML, ButtonHolder, Submit, Row
 
@@ -17,8 +21,13 @@ class Job_InformationForm(forms.ModelForm):
         self.helper.form_action = 'job_information'
         self.helper.layout = Layout(
             Row(
+<<<<<<< HEAD
                 Field('payment_after', css_class='form-group col-md-4 mb-0'),
                 Field('bill_on', css_class='form-group col-md-4 mb-0', widget=forms.DateInput(attrs={'type': 'date'})),
+=======
+                Field('payment_after', css_class='form-group col-md-6 mb-0'),
+                Field('bill_on', css_class='form-group col-md-6 mb-0', widget=forms.DateInput(attrs={'type': 'date'})),
+>>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
             ),
             Row(
                 Field('contract_type', css_class='form-group col-md-6 mb-0'),
@@ -58,6 +67,7 @@ class Job_InformationForm(forms.ModelForm):
             )
         )
 
+<<<<<<< HEAD
 # Add supplier information form from the the supplier information model
 class Supplier_InformationForm(forms.ModelForm):
     class Meta:
@@ -75,6 +85,9 @@ class Container_DetailsForm(forms.ModelForm):
     class Meta:
         model = Container_Details
         fields = '__all__'
+=======
+
+>>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
 
 class File_Ref_NoForm(forms.ModelForm):
     class Meta:
