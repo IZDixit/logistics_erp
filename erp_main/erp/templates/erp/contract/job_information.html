@@ -16,7 +16,7 @@
                 <div class="col-12 text-right">
                     <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddContainerDetailsModal">Update Container Details</button>
                     <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddLooseCargoDetailsModal">Update Loose Cargo Details</button>
-                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#AddSupplierInformationModal">Update Supplier Information</button>
+                    <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddSupplierInformationModal">Update Supplier Information</button>
                 </div>
             </div>
         </div>
@@ -39,33 +39,37 @@
                     <!-- Buttons to Trigger modals -->
                      <div class="card mt-4">
                         <div class="card-header">
-                            Edit your Master Data
+                            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Edit Master Data
+                            </button>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddRouteModal">Add Route</button>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddRouteModal">Add Route</button>
+                                    </div>
+                                    <div class="col-6 text-left">
+                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddToLocationModal">Add To: Location</button>
+                                    </div>
                                 </div>
-                                <div class="col-6 text-left">
-                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddToLocationModal">Add To: Location</button>
+                                <br>
+                                <div class="row">
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddFromLocationModal">Add From: Location</button>
+                                    </div>
+                                    <div class="col-6 text-left">
+                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoClassificationModal">Add Cargo Classification</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddFromLocationModal">Add From: Location</button>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoClassificationModal">Add Cargo Classification</button>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoTypeModal">Add Cargo Type</button>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddClientModal">Add Client</button>
+                                <br>
+                                <div class="row">
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoTypeModal">Add Cargo Type</button>
+                                    </div>
+                                    <div class="col-6 text-left">
+                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddClientModal">Add Client</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -80,10 +80,23 @@ WSGI_APPLICATION = "erp_main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+# This is my PostgreSQL Database.
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "trakana",
+        "USER": "izdixit",
+        "PASSWORD": "'Zishan1436'",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
