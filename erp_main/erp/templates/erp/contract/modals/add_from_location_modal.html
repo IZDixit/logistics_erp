@@ -6,25 +6,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="AddFromLocationModalLabel">Add From: Location</h5>
-<<<<<<< HEAD
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button> -->
-=======
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
             </div>
             <div class="modal-body">
                 <form method="POST" action="{% url 'from_location' %}">
                     {% csrf_token %}
                     {{ from_location_form|crispy }}
-<<<<<<< HEAD
                     <!-- <button type="submit" class="btn btn-primary">Add From: Location</button> -->
-=======
                     <button type="submit" class="btn btn-primary">Add From: Location</button>
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
                 </form>
             </div>
             <div class="modal-footer">

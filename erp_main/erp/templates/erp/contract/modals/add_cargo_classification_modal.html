@@ -6,11 +6,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="AddCargoClassificationModalLabel">Add Cargo Classification</h5>
-<<<<<<< HEAD
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-=======
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -18,11 +15,8 @@
                 <form method="POST" action="{% url 'cargo_classification' %}">
                     {% csrf_token %}
                     {{ cargo_classification_form|crispy }}
-<<<<<<< HEAD
                     <!-- <button type="submit" class="btn btn-primary">Add Cargo Classification</button> -->
-=======
                     <button type="submit" class="btn btn-primary">Add Cargo Classification</button>
->>>>>>> ac324d95e26da2378cb43c0ac40f0506e4bd67c4
                 </form>
             </div>
             <div class="modal-footer">
