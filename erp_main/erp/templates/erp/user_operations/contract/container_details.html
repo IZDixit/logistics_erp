@@ -1,0 +1,13 @@
+{% extends 'erp/user_operations/contract/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <!-- Display all fields in the Container_DeatilsForm -->
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <button type="submit" class="btn btn-success">Submit Container Details</button>
+
+{% endblock %}

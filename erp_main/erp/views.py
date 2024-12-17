@@ -5,7 +5,7 @@ from .forms import Job_InformationForm, Supplier_InformationForm, Loose_Cargo_In
 
 # Create your views here.
 def home(request):
-    return render(request, 'erp/index.html')
+    return render(request, 'erp/home/index.html')
 
 # We are creating a view called job_information, that will use the job_information.html template, to display the information in the job_information model.
 def job_information(request):
@@ -38,7 +38,7 @@ def job_information(request):
                'container_details_form': Container_DetailsForm
     
                }
-    return render(request, 'erp/contract/job_information.html', context=context)
+    return render(request, 'erp/user_operations/contract/job_information.html', context=context)
 
 
 # view for the supplier_information view.
@@ -53,7 +53,7 @@ def supplier_information(request):
 
     supplier_information = Supplier_Information.objects.all()
     context = {'form': form, 'supplier_information': supplier_information}
-    return render(request, 'erp/master/supplier_information.html', context=context)
+    return render(request, 'erp/user_operations/master/supplier_information.html', context=context)
 
 # view for loose_cargo_information view.
 def loose_cargo_information(request):
@@ -67,7 +67,7 @@ def loose_cargo_information(request):
 
     loose_cargo_information = Loose_Cargo_Information.objects.all()
     context = {'form': form, 'loose_cargo_information': loose_cargo_information}
-    return render(request, 'erp/master/loose_cargo_information.html', context=context)
+    return render(request, 'erp/user_operations/master/loose_cargo_information.html', context=context)
 
 # view for container_details view.
 def container_details(request):
@@ -81,7 +81,7 @@ def container_details(request):
 
     container_details = Container_Details.objects.all()
     context = {'form': form, 'container_details': container_details}
-    return render(request, 'erp/master/container_details.html', context=context)
+    return render(request, 'erp/user_operations/master/container_details.html', context=context)
 
 
 def file_ref_no(request):
@@ -95,7 +95,7 @@ def file_ref_no(request):
 
     filerefno = File_Ref_No.objects.all()
     context = {'form': form, 'filerefno': filerefno}
-    return render(request, 'erp/master/file_ref_no.html', context=context)
+    return render(request, 'erp/user_operations/master/file_ref_no.html', context=context)
 
 def client(request):
     if request.method == 'POST':
@@ -108,7 +108,7 @@ def client(request):
 
     client = Client.objects.all()
     context = {'form': form, 'client': client}
-    return render(request, 'erp/master/client.html', context=context)
+    return render(request, 'erp/user_operations/master/client.html', context=context)
 
 def cargo_type(request):
     if request.method == 'POST':
@@ -121,7 +121,7 @@ def cargo_type(request):
 
     cargo_type = Cargo_Type.objects.all()
     context = {'form': form, 'cargo_type': cargo_type}
-    return render(request, 'erp/master/cargo_type.html', context=context)
+    return render(request, 'erp/user_operations/master/cargo_type.html', context=context)
 
 def cargo_classification(request):
     if request.method == 'POST':
@@ -134,7 +134,7 @@ def cargo_classification(request):
 
     cargo_classification = Cargo_Classification.objects.all()
     context = {'form': form, 'cargo_classification': cargo_classification}
-    return render(request, 'erp/master/cargo_classification.html', context=context)
+    return render(request, 'erp/user_operations/master/cargo_classification.html', context=context)
 
 def from_location(request):
     if request.method == 'POST':
@@ -147,7 +147,7 @@ def from_location(request):
 
     from_location = From_Location.objects.all()
     context = {'form': form, 'from_location': from_location}
-    return render(request, 'erp/master/from_location.html', context=context)
+    return render(request, 'erp/user_operations/master/from_location.html', context=context)
 
 def to_location(request):
     if request.method == 'POST':
@@ -160,7 +160,7 @@ def to_location(request):
 
     to_location = To_Location.objects.all()
     context = {'form': form, 'to_location': to_location}
-    return render(request, 'erp/master/to_location.html', context=context)
+    return render(request, 'erp/user_operations/master/to_location.html', context=context)
 
 def route(request):
     if request.method == 'POST':
@@ -173,7 +173,7 @@ def route(request):
 
     route = Route.objects.all()
     context = {'form': form, 'route': route}
-    return render(request, 'erp/master/route.html', context=context)
+    return render(request, 'erp/user_operations/master/route.html', context=context)
 
 # Create a view to for the dashboard in the user_operations folder, to didplay the contents of the html file
 def operations_dashboard(request):

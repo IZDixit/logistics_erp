@@ -1,6 +1,6 @@
 <!-- Using the crispy forms and extending from base.html in the base.html file in the current directory -->
 <!-- erp_main/erp/templates/erp/contract/job_information.html -->
-{% extends 'erp/contract/base.html' %}
+{% extends 'erp/user_operations/contract/base.html' %}
 
 {% load crispy_forms_tags %}
 
@@ -76,15 +76,15 @@
                      </div>
 
                      <!--Modals for each model-->
-                     {% include 'erp/contract/modals/add_route_modal.html' %}
-                     {% include 'erp/contract/modals/add_to_location_modal.html' %}
-                     {% include 'erp/contract/modals/add_from_location_modal.html' %}
-                     {% include 'erp/contract/modals/add_cargo_classification_modal.html' %}
-                     {% include 'erp/contract/modals/add_cargo_type_modal.html' %}
-                     {% include 'erp/contract/modals/add_client_modal.html' %}
-                     {% include 'erp/contract/modals/add_container_details_modal.html' %}
-                     {% include 'erp/contract/modals/add_loose_cargo_details_modal.html' %}
-                     {% include 'erp/contract/modals/add_supplier_information_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_route_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_to_location_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_from_location_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_cargo_classification_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_cargo_type_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_client_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_container_details_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_loose_cargo_details_modal.html' %}
+                     {% include 'erp/user_operations/contract/modals/add_supplier_information_modal.html' %}
                      
                 </div>        
             </div>
