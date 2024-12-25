@@ -1,29 +1,31 @@
 {% load crispy_forms_tags %}
 
-<!-- erp_main/erp/templates/erp/contract/modals/add_classification_modal.html -->
-<div class="modal fade" id="AddCargoClassificationModal" tabindex="-1" role="dialog" aria-labelledby="AddCargoClassificationModalLabel" aria-hidden="true">
+<!-- erp_main/erp/templates/erp/contract/modals/add_cargo_type_modal.html -->
+<div class="modal fade" id="AddCargoClassificationModal" tabindex="-1" aria-labelledby="AddCargoClassificationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="AddCargoClassificationModalLabel">Add Cargo Classification</h5>
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="modal-content border-0 shadow-sm">
+            <!--Modal Header-->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="AddCargoClassificationModalLabel">Add New Cargo Classification</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>    
             </div>
+
+            <!--Modal Body-->
             <div class="modal-body">
-                <form method="POST" action="{% url 'cargo_classification' %}">
+                <form method="POST" action="{% url 'cargo_classification' %}" id="cargoTypeForm">
                     {% csrf_token %}
-                    {{ cargo_classification_form|crispy }}
-                    <!-- <button type="submit" class="btn btn-primary">Add Cargo Classification</button> -->
-                    <button type="submit" class="btn btn-primary">Add Cargo Classification</button>
+                    {{ cargo_type_form|crispy }}
+
+
+                    <!--Form Buttons-->
+                    <div class="d-flex justif-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>Add Cargo Type
+                        </button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-

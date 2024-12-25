@@ -1,94 +1,194 @@
-<!-- Using the crispy forms and extending from base.html in the base.html file in the current directory -->
-<!-- erp_main/erp/templates/erp/contract/job_information.html -->
 {% extends 'erp/user_operations/contract/base.html' %}
-
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-    <!-- We will now add buttons that will reference the modals of container_details, loose_cargo_details, and supplier_information. -->
-    <div class="card mt-4">
-        <div class="card-header">
-            Edit your Container, Loose Cargo, and Supplier Details Data
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12 text-right">
-                    <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddContainerDetailsModal">Update Container Details</button>
-                    <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddLooseCargoDetailsModal">Update Loose Cargo Details</button>
-                    <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#AddSupplierInformationModal">Update Supplier Information</button>
+    <div class="container-fluid py-4">
+        <!--Progress Indicator-->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" id="formProgress" style="width: 25%;">
+                                <span class="fw-bold">Job Information</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <br>              
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
 
-                    <h5 class="card-title">Job Information</h5>
-                    <p class="card-text">Please fill out the form below to create a new job.</p>
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <br>
-                        <button type="submit" class="btn btn-success">Submit Job Information</button>
-                    </form>
+        <!--Main Content Area-->
+        <div calss="row">
+            <!--Left Side - Forms -->
+            <div calss="col-lg-9">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Create New Job File</h5>
+                    </div>
+                    <div class="card-body">
+                        <!--Tab Navigation-->
+                        <ul class="nav nav-tabs nav-fill mb-4" id="jobFileTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="job-tab" data-bs-toggle="tab" href="#job" role="tab">
+                                    <i class="bi bi-file-text"></i>Job Information
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="supplier-tab" data-bs-toggle="tab" href="#supplier" role="tab">
+                                    <i class="bi bi-people"></i>Supplier Details
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="cargo-tab" data-bs-toggle="tab" href="#cargo" role="tab">
+                                    <i class="bi bi-box"></i>Cargo Details
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="container-tab" data-bs-toggle="tab" href="#container" role="tab">
+                                    <i class="bi bi-truck"></i>Container Details 
+                                </a>
+                            </li>
+                        </ul>
 
-                    <!-- Buttons to Trigger modals -->
-                     <div class="card mt-4">
-                        <div class="card-header">
-                            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                Edit Master Data
-                            </button>
-                        </div>
-                        <div class="collapse" id="collapseExample">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddRouteModal">Add Route</button>
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddToLocationModal">Add To: Location</button>
-                                    </div>
+                        <!--Tab Content-->
+                        {% if job_file %}
+                            <form method="POST" action="{% url 'edit-job-file' file_id=job_file.file_id %}" id="jobFileForm">
+                        {% else %}
+                            <form method="POST" action="{% url 'create-job-file' %}" id="jobFileForm_{{ forloop.counter }}">
+                        {% endif %}
+                            {% csrf_token %}
+                            <div class="tab-content" id="jobFileContent">
+                                <!--Job Information Tab-->
+                                <div class="tab-pane fade show active" id="job" role="tabpanel">
+                                    {{ forms.job_information|crispy}}
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddFromLocationModal">Add From: Location</button>
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoClassificationModal">Add Cargo Classification</button>
-                                    </div>
+                                <!--Supplier Information Tab-->
+                                <div class="tab-pane fade" id="supplier" role="tabpanel">
+                                    {{ forms.supplier_information|crispy}}
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddCargoTypeModal">Add Cargo Type</button>
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        <button type="button" class="btn btn-sm btn-block btn-primary" data-toggle="modal" data-target="#AddClientModal">Add Client</button>
-                                    </div>
+                                <!--Cargo Information Tab-->
+                                <div class="tab-pane fade" id="cargo" role="tabpanel">
+                                    {{ forms.loose_cargo_information|crispy}}
+                                </div>
+                                <!--Container Information Tab-->
+                                <div class="tab-pane fade" id="container" role="tabpanel">
+                                    {{ forms.container_details|crispy}}
                                 </div>
                             </div>
-                        </div>
-                     </div>
 
-                     <!--Modals for each model-->
-                     {% include 'erp/user_operations/contract/modals/add_route_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_to_location_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_from_location_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_cargo_classification_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_cargo_type_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_client_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_container_details_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_loose_cargo_details_modal.html' %}
-                     {% include 'erp/user_operations/contract/modals/add_supplier_information_modal.html' %}
-                     
-                </div>        
+                            <!--Form Navigation Buttons-->
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
+                                <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+                                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">Submit Job File</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!--Right Side - Quick Actions -->
+            <div class="col-lg-3">
+                <!-- Master Data Management Card -->
+                 <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="card-title mb-0">Master Data Management</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <button class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#AddRouteModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add New Route
+                            </button>
+                            <button class="list-goup-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#AddFromLocationModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add New From Location
+                            </button>
+                            <button class="list-goup-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#AddToLocationModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add New To Location
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#AddCargoClassificationModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add New Cargo Classification
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#AddCargoTypeModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add New Cargo Type
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="AddClientModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add New Client
+                            </button>
+                         </div>
+                    </div>
+                 </div>
             </div>
         </div>
     </div>
+
+    <!--Include all your existing modals-->
+    {% include 'erp/user_operations/contract/modals/add_route_modal.html' %}
+    {% include 'erp/user_operations/contract/modals/add_from_location_modal.html' %}
+    {% include 'erp/user_operations/contract/modals/add_to_location_modal.html' %}
+    {% include 'erp/user_operations/contract/modals/add_cargo_classification_modal.html' %}
+    {% include 'erp/user_operations/contract/modals/add_cargo_type_modal.html' %}
+    {% include 'erp/user_operations/contract/modals/add_client_modal.html' %}
+
+
+    <!--Add JavaScript to handle the form navigation-->
+    {% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('#jobFileTabs .nav-link');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const formProgress = document.getElementById('formProgress');
+            let currentTab = 0;
+
+            function updateButtons() {
+                prevBtn.disabled = currentTab === 0;
+                if (currentTab === tabs.length - 1) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+
+                // Update the progress bar
+                const progress = ((currentTab + 1) / tabs.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressBar.innerHTML = `Step ${currentTab + 1} of ${tabs.length}`;
+            }
+
+            function SwitchTab(index) {
+                tabs.forEach(tab => tab.classList.remove('active'));
+                tabs[index].classList.add('active');
+
+                const tabPanes = document.querySelectorAll('.tab-pane');
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                tabPanes[index].classList.add('show', 'active');
+
+                currentTab = index;
+                updateButtons();
+            }
+
+            prevBtn.addEventListener('click', () => {
+                if (currentTab > 0) {
+                    SwitchTab(currentTab - 1);
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentTab < tabs.length - 1) {
+                    SwitchTab(currentTab + 1);
+                }
+            });
+
+            // Initialize
+            updateButtons();
+        });
+    </script>
+    
+{% endblock %}
 {% endblock %}
 

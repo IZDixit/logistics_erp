@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 
@@ -51,6 +52,19 @@ class File_Ref_No(models.Model):
     def __str__(self):
         return self.lot_no
 
+# <----------------------- XXXXXXXXXXX -------------------------->
+# We are creating a new model, its function will be to link the 4 models together.
+class JobFile(models.Model):
+    file_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    job_information = models.OneToOneField('Job_Information', on_delete=models.CASCADE, null=True, blank=True)
+    supplier_information = models.OneToOneField('Supplier_Information', on_delete=models.CASCADE, null=True, blank=True)
+    loose_cargo_information = models.OneToOneField('Loose_Cargo_Information', on_delete=models.CASCADE, null=True, blank=True)
+    container_details = models.OneToOneField('Container_Details', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.file_id)
+    
 
 # <----------------------- XXXXXXXXXXX -------------------------->
 # Create a model named "job_information" with the following fields:
@@ -110,6 +124,9 @@ class Job_Information(models.Model):
     #Offloading Point should be char.
     offloading_point = models.CharField(max_length=100)
 
+    # Linking to JobFile model.
+    job_file = models.OneToOneField(JobFile, on_delete=models.CASCADE, related_name='job_info', null=True)
+
 # <----------------------- XXXXXXXXXXX -------------------------->
 # We are creating a model named Supplier Information with the following fields:
 # File Ref No, Consignor, Consignee
@@ -120,6 +137,9 @@ class Supplier_Information(models.Model):
     consignor = models.CharField(max_length=100)
     # Consignee should be char.
     consignee = models.CharField(max_length=100)
+
+    # Linking to JobFile model.
+    job_file = models.OneToOneField(JobFile, on_delete=models.CASCADE, related_name='supplier_info', null=True)
 
 # <----------------------- XXXXXXXXXXX -------------------------->
 # We are creating a model named Loose Cargo Information with the following fields:
@@ -146,6 +166,9 @@ class Loose_Cargo_Information(models.Model):
     # Invoice No should be char.
     invoice_no = models.CharField(max_length=100)
 
+    # Linking to JobFile model.
+    job_file = models.OneToOneField(JobFile, on_delete=models.CASCADE, related_name='loose_cargo_info', null=True)
+
 # <----------------------- XXXXXXXXXXX -------------------------->
 # We are creating a model named Container Details with the following fields:
 # Container Type, Container No, Truck Planned, MTN, Commodity, No. of Packages, Seal No., Invoice No.
@@ -166,3 +189,7 @@ class Container_Details(models.Model):
     seal_no = models.CharField(max_length=100)
     # Invoice No should be char.
     invoice_no = models.CharField(max_length=100)
+
+    # Linking to JobFile model.
+    job_file = models.OneToOneField(JobFile, on_delete=models.CASCADE, related_name='container_info', null=True)
+
