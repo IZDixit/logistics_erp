@@ -1,5 +1,5 @@
 <!-- templates/route.html -->
-{% extends 'erp/master/base.html' %}
+{% extends 'erp/user_operations/master/base.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -13,10 +13,10 @@
 
   <h2 class="mt-4">Existing Routes</h2>
   <ul class="list-group">
-      {% for route in routes %}
-          <li class="list-group-item">{{ route.name }}</li>
+      {% for r in route %}
+          <li class="list-group-item">{{ r.name }}</li>
       {% empty %}
-          <li class="list-group-item">No routes available.</li>
+          <li class="list-group-item list-group-item-empty">No routes available.</li>
       {% endfor %}
   </ul>
 </div>

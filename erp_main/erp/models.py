@@ -1,5 +1,9 @@
 from django.db import models
 import uuid
+# Used in the JobFile model to generate a unique file_id.
+import time
+import random
+import string
 
 # Create your models here.
 
@@ -46,11 +50,11 @@ class Client(models.Model):
         return self.name
     
 # The File Ref No model (This is auto filed by the lot no)
-class File_Ref_No(models.Model):
-    lot_no = models.CharField(max_length=100)
+# class File_Ref_No(models.Model):
+#     lot_no = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.lot_no
+#     def __str__(self):
+#         return self.lot_no
 
 # <----------------------- XXXXXXXXXXX -------------------------->
 # We are creating a new model, its function will be to link the 4 models together.
@@ -64,6 +68,13 @@ class JobFile(models.Model):
 
     def __str__(self):
         return str(self.file_id)
+
+    def generate_job_file_number(self):
+        timestamp = str(time.time())
+        random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        self.job_fie_number = f"JOB-{timestamp}-{random_string}"
+        self.save()
+        
     
 
 # <----------------------- XXXXXXXXXXX -------------------------->
@@ -118,7 +129,7 @@ class Job_Information(models.Model):
 
     # Foreign Key Relationships
     #Lot No should be char.
-    lot_no = models.ForeignKey(File_Ref_No, on_delete=models.CASCADE)
+    # lot_no = models.ForeignKey(File_Ref_No, on_delete=models.CASCADE)
 
 
     #Offloading Point should be char.
@@ -132,7 +143,7 @@ class Job_Information(models.Model):
 # File Ref No, Consignor, Consignee
 class Supplier_Information(models.Model):
     # File Ref No should be char.
-    file_ref_no = models.CharField(max_length=100)
+    # file_ref_no = models.CharField(max_length=100)
     # Consignor should be char.
     consignor = models.CharField(max_length=100)
     # Consignee should be char.
