@@ -12,7 +12,7 @@
 
             <!--Modal Body-->
             <div class="modal-body">
-                <form method="POST" action="{% url 'from_location' %}" id="cargoTypeForm">
+                <form method="POST" action="{% url 'to_location' %}" id="cargoTypeForm">
                     {% csrf_token %}
                     {{ cargo_type_form|crispy }}
 
@@ -21,7 +21,7 @@
                     <div class="d-flex justif-content-end gap-2 mt-4">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-2"></i>Add From Location
+                            <i class="bi bi-plus-circle me-2"></i>Add Cargo Type
                         </button>
                     </div>
                 </form>

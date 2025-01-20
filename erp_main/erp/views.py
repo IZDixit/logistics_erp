@@ -1,29 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.db import transaction
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from .models import Job_Information, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route, Supplier_Information, Loose_Cargo_Information, Container_Details, JobFile
-from django.urls import reverse
-from .forms import Job_InformationForm, Supplier_InformationForm, Loose_Cargo_InformationForm, Container_DetailsForm, ClientForm, Cargo_TypeForm, Cargo_ClassificationForm, From_LocationForm, To_LocationForm, RouteForm
+# from django.http import HttpResponse
+from .models import Job_Information, File_Ref_No, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route, Supplier_Information, Loose_Cargo_Information, Container_Details, JobFile
+from .forms import Job_InformationForm, Supplier_InformationForm, Loose_Cargo_InformationForm, Container_DetailsForm,File_Ref_NoForm, ClientForm, Cargo_TypeForm, Cargo_ClassificationForm, From_LocationForm, To_LocationForm, RouteForm
 
 # Create your views here.
 def home(request):
     return render(request, 'erp/home/index.html')
-
-# Creating a View to handle the AJAX request for generating job file number.
-@method_decorator(csrf_exempt, name='dispatch')
-class GenerateJobFileNumberView(View):
-    def post(self, request, file_id):
-        try:
-            job_file = JobFile.objects.get(file_id=file_id)
-            job_file.generate_job_file_number()
-            return JsonResponse({'success': True, 'job_file_number': job_file.job_file_number})
-        except JobFile.DoesNotExist:
-            return JsonResponse({'error': 'Job file not found'}, status=404)
-
-
 
 class CreateJobFileView(View):
     template_name = 'erp/user_operations/contract/job_information.html'
@@ -48,9 +32,8 @@ class CreateJobFileView(View):
             job_file = JobFile.objects.get(file_id=file_id)
             forms = self.get_forms(job_file)
         else:
-            job_file = JobFile.objects.create()
-            forms = self.get_forms(job_file)
-        return render(request, self.template_name, {'forms': forms,'job_file':job_file})
+            forms = self.get_forms()
+        return render(request, self.template_name, {'forms': forms})
     
     @transaction.atomic
     def post(self, request, file_id=None):
@@ -58,10 +41,6 @@ class CreateJobFileView(View):
             job_file = JobFile.objects.get(file_id=file_id)
         else:
             job_file = JobFile.objects.create()
-
-        if 'generate_job_file_number' in request.POST:
-            job_file.generate_job_file_number()
-            return redirect('create-job-file', file_id=job_file.file_id)
         forms = {
             'job_information': Job_InformationForm(request.POST, prefix='job', instance=getattr(job_file, 'job_information', None)),
             'supplier_information': Supplier_InformationForm(request.POST, prefix='supplier', instance=getattr(job_file, 'supplier_information', None)),
@@ -74,36 +53,21 @@ class CreateJobFileView(View):
                 instance = form.save(commit=False)
                 instance.job_file = job_file
                 instance.save()
-
-            # Handle both AJAX and regular requests
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({
-                    'success': True,
-                    'redirect_url': reverse('job_file_detail', kwargs={'file_id': job_file.file_id})
-                })
             return redirect('job_file_detail', file_id=job_file.file_id)
-        
-        # Handle form validation errors
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            errors = {}
-            for form_name, form in forms.items():
-                if form.errors:
-                    errors[form_name] = form.errors
-            return JsonResponse({'success': False, 'errors': errors}, status=400)
-        return render(request, self.template_name, {'forms': forms, 'job_file':job_file})
+        return render(request, self.template_name, {'forms': forms})
 
-# def file_ref_no(request):
-#     if request.method == 'POST':
-#         form = File_Ref_NoForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('file_ref_no')
-#     else:
-#         form = File_Ref_NoForm()
+def file_ref_no(request):
+    if request.method == 'POST':
+        form = File_Ref_NoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('file_ref_no')
+    else:
+        form = File_Ref_NoForm()
 
-#     filerefno = File_Ref_No.objects.all()
-#     context = {'form': form, 'filerefno': filerefno}
-#     return render(request, 'erp/user_operations/master/file_ref_no.html', context=context)
+    filerefno = File_Ref_No.objects.all()
+    context = {'form': form, 'filerefno': filerefno}
+    return render(request, 'erp/user_operations/master/file_ref_no.html', context=context)
 
 def client(request):
     if request.method == 'POST':
