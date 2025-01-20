@@ -1,48 +1,23 @@
-import logging
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from django.db import transaction
-from django.http import JsonResponse
-from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ValidationError
-from django.utils.decorators import method_decorator
-from .models import Job_Information, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route, Supplier_Information, Loose_Cargo_Information, Container_Details, JobFile
-from .forms import Job_InformationForm, Supplier_InformationForm, Loose_Cargo_InformationForm, Container_DetailsForm, ClientForm, Cargo_TypeForm, Cargo_ClassificationForm, From_LocationForm, To_LocationForm, RouteForm
+# from django.http import HttpResponse
+from .models import Job_Information, File_Ref_No, Client, Cargo_Type, Cargo_Classification, From_Location, To_Location, Route, Supplier_Information, Loose_Cargo_Information, Container_Details, JobFile
+from .forms import Job_InformationForm, Supplier_InformationForm, Loose_Cargo_InformationForm, Container_DetailsForm,File_Ref_NoForm, ClientForm, Cargo_TypeForm, Cargo_ClassificationForm, From_LocationForm, To_LocationForm, RouteForm
 
 # Create your views here.
 def home(request):
     return render(request, 'erp/home/index.html')
 
-# Creating a View to handle the AJAX request for generating job file number.
-logger = logging.getLogger(__name__)
-@method_decorator(csrf_exempt, name='dispatch')
-class GenerateJobFileNumberView(View):
-    def post(self, request, file_id):
-        try:
-            job_file = get_object_or_404(JobFile, file_id=file_id)
-            job_file.generate_job_file_number()
-            return JsonResponse({'success': True, 'job_file_number': job_file.job_file_number})
-        except Exception as e:
-            logger.exception(f"Error generating job file number: {str(e)}")
-            return JsonResponse({'success': False, 'error': 'Failed to generate job file number'}, status=500)
-
-
-
 class CreateJobFileView(View):
     template_name = 'erp/user_operations/contract/job_information.html'
 
-    def get_forms(self, job_file=None, post_data=None):
-        kwargs = {'prefix': 'job'}
-        if post_data:
-            kwargs['data'] = post_data
-        if job_file:
-            kwargs['instance'] = getattr(job_file, 'job_information', None)
+    def get_forms(self, job_file=None):
         return {
-            'job_information': Job_InformationForm(**kwargs),
-            'supplier_information': Supplier_InformationForm(data=post_data if post_data else None, prefix='supplier', instance=getattr(job_file, 'supplier_information', None)),
-            'loose_cargo_information': Loose_Cargo_InformationForm(data=post_data if post_data else None, prefix='loose', instance=getattr(job_file, 'loose_cargo_information', None)),
-            'container_details': Container_DetailsForm(data=post_data if post_data else None, prefix='container', instance=getattr(job_file, 'container_details', None)),
+            'job_information': Job_InformationForm(prefix='job', instance=getattr(job_file, 'job_information', None)),
+            'supplier_information': Supplier_InformationForm(prefix='supplier', instance=getattr(job_file, 'supplier_information', None)),
+            'loose_cargo_information': Loose_Cargo_InformationForm(prefix='loose', instance=getattr(job_file, 'loose_cargo_information', None)),
+            'container_details': Container_DetailsForm(prefix='container', instance=getattr(job_file, 'container_details', None)),
             # Including my modal forms
             'route_form':RouteForm(),
             'from_location_form':From_LocationForm(),
@@ -53,72 +28,47 @@ class CreateJobFileView(View):
         }
     
     def get(self, request, file_id=None):
-        try:
-            if file_id:
-                job_file = get_object_or_404(JobFile, file_id=file_id)
-            else:
-                job_file = JobFile.objects.create()
-
+        if file_id:
+            job_file = JobFile.objects.get(file_id=file_id)
             forms = self.get_forms(job_file)
-            return render(request, self.template_name, {'forms': forms, 'job_file': job_file})
-        except Exception as e:
-            logger.error(f"Error in get request: {str(e)}")
-            return JsonResponse({'success': False, 'error': 'Failed to load job file form'}, status=500)
-    
+        else:
+            forms = self.get_forms()
+        return render(request, self.template_name, {'forms': forms})
     
     @transaction.atomic
     def post(self, request, file_id=None):
-        try:
-            if file_id:
-                job_file = get_object_or_404(JobFile, file_id=file_id)
-            else:
-                job_file = JobFile.objects.create()
+        if file_id:
+            job_file = JobFile.objects.get(file_id=file_id)
+        else:
+            job_file = JobFile.objects.create()
+        forms = {
+            'job_information': Job_InformationForm(request.POST, prefix='job', instance=getattr(job_file, 'job_information', None)),
+            'supplier_information': Supplier_InformationForm(request.POST, prefix='supplier', instance=getattr(job_file, 'supplier_information', None)),
+            'loose_cargo_information': Loose_Cargo_InformationForm(request.POST, prefix='loose', instance=getattr(job_file, 'loose_cargo_information', None)),
+            'container_details': Container_DetailsForm(request.POST, prefix='container', instance=getattr(job_file, 'container_details', None)),
+        }
 
-            # Handle job file number generation
-            if request.POST.get('generate_job_file_number'):
-                job_file.generate_job_file_number()
-                return JsonResponse({'success': True, 'job_file_number': job_file.job_file_number})
-            
-            # Process form submission
-            forms = self.get_forms(job_file, request.POST)
+        if all([form.is_valid() for form in forms.values()]):
+            for form in forms.values():
+                instance = form.save(commit=False)
+                instance.job_file = job_file
+                instance.save()
+            return redirect('job_file_detail', file_id=job_file.file_id)
+        return render(request, self.template_name, {'forms': forms})
 
-            if all(form.is_valid() for form in forms.values()):
-                try:
-                    with transaction.atomic():
-                        for form in forms.values():
-                            if hasattr(form, 'save'): # Check if the form has a save method
-                                instance = form.save(commit=False)
-                                instance.job_file = job_file
-                                instance.save()
-                                form.save_m2m() # Save many-to-many fields related to the instance
+def file_ref_no(request):
+    if request.method == 'POST':
+        form = File_Ref_NoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('file_ref_no')
+    else:
+        form = File_Ref_NoForm()
 
-                    return JsonResponse({
-                        'success': True,
-                        'message': 'Job file saved successfully',
-                        'redirect_url': reverse('job_file', kwargs={'file_id': job_file.file_id})
-                    })
-                except Exception as e:
-                    logger.error(f"Error saving forms: {str(e)}")
-                    raise ValidationError('Failed to save form data')
-            else:
-                # Collect all form errors
-                errors = {}
-                for form_name, form in forms.items():
-                    if form.errors:
-                        errors[form_name] = {
-                            field: [str(error) for error in field_errors]
-                            for field, field_errors in form.errors.items()
-                        }
-                return JsonResponse({'success': False, 'errors': errors}, status=400)
-            
-        except ValidationError as e:
-            return JsonResponse({'success': False, 'errors': str(e)}, status=400)
-        except Exception as e:
-            logger.error(f"Unexpected Error in form submission: {str(e)}")
-            return JsonResponse({'success': False, 'errors': 'An unexpected error occured, please try again later'}, status=500)
+    filerefno = File_Ref_No.objects.all()
+    context = {'form': form, 'filerefno': filerefno}
+    return render(request, 'erp/user_operations/master/file_ref_no.html', context=context)
 
-
-        
 def client(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)

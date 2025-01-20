@@ -1,5 +1,5 @@
 <!-- templates/client.html -->
-{% extends 'erp/user_operations/master/base.html' %}
+{% extends 'erp/master/base.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -13,8 +13,8 @@
 
   <h2 class="mt-4">Existing Clients</h2>
   <ul class="list-group">
-      {% for c in client %}
-          <li class="list-group-item">{{ c.name }}</li>
+      {% for client in clients %}
+          <li class="list-group-item">{{ client.name }}</li>
       {% empty %}
           <li class="list-group-item">No clients available.</li>
       {% endfor %}

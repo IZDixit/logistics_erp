@@ -1,5 +1,5 @@
 <!-- templates/cargo_classification.html -->
-{% extends 'erp/user_operations/master/base.html' %}
+{% extends 'erp/master/base.html' %}
 
 {% load crispy_forms_tags %}
 
@@ -14,8 +14,8 @@
 
   <h2 class="mt-4">Existing Cargo Classifications</h2>
   <ul class="list-group">
-      {% for cargo_class in cargo_classification %}
-          <li class="list-group-item">{{ cargo_class.name }}</li>
+      {% for cargo_classification in cargo_classifications %}
+          <li class="list-group-item">{{ cargo_classification.name }}</li>
       {% empty %}
           <li class="list-group-item">No Cargo Classifications available.</li>
       {% endfor %}

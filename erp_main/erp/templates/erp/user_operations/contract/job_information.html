@@ -1,21 +1,8 @@
-
 {% extends 'erp/user_operations/contract/base.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
     <div class="container-fluid py-4">
-        <!-- Loading Overlay -->
-         <div id="LoadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Alert Container for messages -->
-        <div id="alertcontainer" class="position-fixed top-0 end-0 p-3" style="z-index: 9999"></div>
-
         <!--Progress Indicator-->
         <div class="row mb-4">
             <div class="col-12">
@@ -32,23 +19,14 @@
         </div>
 
         <!--Main Content Area-->
-        <div class="row">
+        <div calss="row">
             <!--Left Side - Forms -->
-            <div class="col-lg-9">
+            <div calss="col-lg-9">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Create New Job File - File ID: {{job_file.file_id }}</h5>
+                        <h5 class="card-title mb-0">Create New Job File</h5>
                     </div>
-                        
                     <div class="card-body">
-                        <!-- The below is related to the job_file number -->
-                        <div class="mb-3">
-                            <label for="job_file_number" class="form-label">Job File Number</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="job_file_number" value="{{ job_file.job_file_number }}" readonly>
-                                <button class="btn btn-primary" type="button" id="generate_job_file_number">Generate Job File Number</button>
-                            </div>
-                        </div>
                         <!--Tab Navigation-->
                         <ul class="nav nav-tabs nav-fill mb-4" id="jobFileTabs" role="tablist">
                             <li class="nav-item">
@@ -74,19 +52,12 @@
                         </ul>
 
                         <!--Tab Content-->
-                        <!--Submitting data logic-->
                         {% if job_file %}
-                            <form method="POST" action="{% url 'edit-job-file' file_id=job_file.file_id %}" id="jobFileForm" novalidate>
+                            <form method="POST" action="{% url 'edit-job-file' file_id=job_file.file_id %}" id="jobFileForm">
                         {% else %}
-                            <form method="POST" action="{% url 'create-job-file' %}" id="createJobFileForm" novalidate>
+                            <form method="POST" action="{% url 'create-job-file' %}" id="jobFileForm_{{ forloop.counter }}">
                         {% endif %}
                             {% csrf_token %}
-                            <!-- Form Error Summary -->
-                            <div id="formErrorSummary" class="alert alert-danger" style="display: none;">
-                                <h5>Please correct the following errors:</h5>
-                                <ul id="errorList"></ul>
-                            </div>
-
                             <div class="tab-content" id="jobFileContent">
                                 <!--Job Information Tab-->
                                 <div class="tab-pane fade show active" id="job" role="tabpanel">
@@ -110,18 +81,12 @@
                             <div class="d-flex justify-content-between mt-4">
                                 <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
                                 <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
-                                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    Submit Job File
-                                </button>
+                                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">Submit Job File</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <br>
-            <hr>
-            <hr>
 
             <!--Right Side - Quick Actions -->
             <div class="col-lg-3">
@@ -165,70 +130,20 @@
     {% include 'erp/user_operations/contract/modals/add_cargo_type_modal.html' %}
     {% include 'erp/user_operations/contract/modals/add_client_modal.html' %}
 
-{% endblock %}
-<!--Add JavaScript to handle the form navigation-->
-{% block extra_js %}
+
+    <!--Add JavaScript to handle the form navigation-->
+    {% block extra_js %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // Utility function to show an alert message and loading status
-            function showLoading() {
-                document.getElementById('LoadingOverlay').style.display = 'block';
-            }
-
-            function hideLoading() {
-                document.getElementById('LoadingOverlay').style.display = 'none';
-            }
-
-            function showAlert(message, type = 'success') {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-                alertDiv.innerHTML = `
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                `;
-                document.getElementById('alertcontainer').appendChild(alertDiv);
-                setTimeout(() => {
-                    alertDiv.remove();
-                }, 5000);
-            }
-
-            function displayErrors(errors) {
-                const erroSummary = document.getElementById('formErrorSummary');
-                const errorList = document.getElementById('errorList');
-                errorList.innerHTML = '';
-
-                Object.entries(errors).forEach(([formName, formErorrs]) => {
-                    if (typeof formErorrs === 'object') {
-                        Object.entries(formErorrs).forEach(([field, fieldErrors]) => {
-                            const li = document.createElement('li');
-                            li.textContent = `${formName} - ${field}: ${fieldErrors.join(', ')}`;
-                            errorList.appendChild(li);
-                        });
-                    }
-                });
-
-                erroSummary.style.display = 'block';
-                erroSummary.scrollIntoView({ behavior: 'smooth' });
-            }
-            
-
-            // Get all the tabs and buttons (Tab naviagtion Logic)
             const tabs = document.querySelectorAll('#jobFileTabs .nav-link');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
             const formProgress = document.getElementById('formProgress');
             let currentTab = 0;
-            // I think this might be an issue (error)
-            // const progressBar = document.getElementById('formProgress');
 
-            // Function to update the button states and progress bar.
             function updateButtons() {
-                // Enable or disable the buttons based on the current tab
                 prevBtn.disabled = currentTab === 0;
-
-                // Show/hide Next and Submit buttons
                 if (currentTab === tabs.length - 1) {
                     nextBtn.style.display = 'none';
                     submitBtn.style.display = 'block';
@@ -239,139 +154,41 @@
 
                 // Update the progress bar
                 const progress = ((currentTab + 1) / tabs.length) * 100;
-                formProgress.style.width = `${progress}%`;
-                formProgress.innerHTML = `Step ${currentTab + 1} of ${tabs.length}`;
+                progressBar.style.width = `${progress}%`;
+                progressBar.innerHTML = `Step ${currentTab + 1} of ${tabs.length}`;
             }
 
-            // Function to switch tabs
             function SwitchTab(index) {
-                // update tab navigation
                 tabs.forEach(tab => tab.classList.remove('active'));
                 tabs[index].classList.add('active');
 
-                // Update tab content
                 const tabPanes = document.querySelectorAll('.tab-pane');
-                tabPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
                 tabPanes[index].classList.add('show', 'active');
 
-                // Update current tab index
                 currentTab = index;
-                // Update button states
                 updateButtons();
             }
 
-            // Previous button event listener
             prevBtn.addEventListener('click', () => {
                 if (currentTab > 0) {
                     SwitchTab(currentTab - 1);
                 }
             });
 
-            // Next button event listener.
             nextBtn.addEventListener('click', () => {
                 if (currentTab < tabs.length - 1) {
                     SwitchTab(currentTab + 1);
                 }
             });
 
-            // Initialize buttons and progress bar
-            // updateButtons();
-
-            // Enhanced form submission handling
-            const form = document.getElementById('jobFileForm') || document.getElementById('createJobFileForm');
-            const submitSpinner = submitBtn.querySelector('.spinner-border');
-
-            if (form) {
-                form.addEventListener('submit', async (e) => {
-                    e.preventDefault(); // Prevent default form submission
-                    showLoading();
-                    submitBtn.disabled = true;
-                    submitSpinner.classList.remove('d-none');
-                    document.getElementById('formErrorSummary').style.display = 'none';
-                    
-                    try {
-                        const formData = new FormData(form);
-                        const response = await fetch(form.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                            },
-                            credentials: 'same-origin',
-                        });
-
-                        const contentType = response.headers.get('content-type');
-                        if (contentType && contentType.includes('application/json')) {
-                            const data = await response.json();
-                            if (response.ok) {
-                                // show success message
-                                showAlert('Job file saved successfully', 'success');
-                                if (data.redirect_url) {
-                                    window.location.href = data.redirect_url;
-                                } else {
-                                    // location.reload (meaning ?)
-                                    window.location.reload();
-                                }
-                            } else {
-                                // show error message
-                                displayErrors(data.errors);
-                                showAlert('please correct the errors in the form', 'danger');
-                            }
-                        } else {
-                            if (response.ok) {
-                                window.location.reload();
-                            } else {
-                                throw new Error('Invalid response from server');
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        showAlert('An error occurred while saving the job file', 'danger');
-                    } finally {
-                        hideLoading();
-                        submitBtn.disabled = false;
-                        submitSpinner.classList.add('d-none');
-                    }
-                });
-            }
-
-            // Handling the "Generate Job File Number" button click
-            const generateBtn = document.getElementById('generate_job_file_number');
-            const jobFileNumberInput = document.getElementById('job_file_number');
-            
-            if (generateBtn && jobFileNumberInput)  {
-                generateBtn.addEventListener('click', async () => {
-                    generateBtn.disabled = true;
-                    try {
-                        const response = await fetch('{% url "generate-job-file-number" file_id=job_file.file_id %}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': '{{ csrf_token }}',
-                            },
-                            credentials: 'same-origin',
-                        });
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            jobFileNumberInput.value = data.job_file_number;
-                            showAlert('Job file number generated successfully', 'success');
-                        } else {
-                            throw new Error('Failed to generate job file number');
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        showAlert('An error occurred while generating job file number','danger');
-                    } finally {
-                        generateBtn.disabled = false;
-                    }
-                });
-            }
-
-            // Initialize buttons and progress bar
-            updateButtons();        
+            // Initialize
+            updateButtons();
         });
     </script>
     
+{% endblock %}
 {% endblock %}
 
