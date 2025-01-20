@@ -1,0 +1,45 @@
+{% extends 'erp/user_operations/contract/base.html' %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Job Files</h5>
+                    <a href="{% url 'create-job-file' %}" class="btn btn-primary">Create New Job File</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Job File Number</th>
+                                    <th>Created Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job_file in job_files %}
+                                <tr>
+                                    <td>{{ job_file.job_file_number }}</td>
+                                    <td>{{ job_file.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td>
+                                        <a href="{% url 'job_file_detail' file_id=job_file.file_id %}" class="btn btn-sm btn-info">View</a>
+                                        <a href="{% url 'edit-job-file' file_id=job_file.file_id %}" class="btn btn-sm btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center">No job files found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

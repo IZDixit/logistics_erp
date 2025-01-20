@@ -1,0 +1,245 @@
+{% extends 'erp/user_operations/contract/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Main container -->
+<div class="container-fluid">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none">
+        <div class="d-flex justify-content-center align-items-center h-100 bg-dark bg-opacity-50">
+            <div class="spinner-border text-light"></div>
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="progress">
+                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 25%">
+                    Step 1 of 4
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main form container -->
+    <div class="row">
+        <!-- Form section -->
+        <div class="col-lg-9">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        {% if editing %}Edit{% else %}Create{% endif %} Job File
+                        {% if job_file %}- {{ job_file.job_file_number }}{% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Form tabs -->
+                    <ul class="nav nav-tabs" id="formTabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#jobInfo">
+                                Job Information
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#supplierInfo">
+                                Supplier Details
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cargoInfo">
+                                Cargo Details
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#containerInfo">
+                                Container Details
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Form content -->
+                    <form id="jobFileForm" method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="tab-content mt-3">
+                            <!-- Job Information tab -->
+                            <div class="tab-pane fade show active" id="jobInfo">
+                                {{ forms.job_information|crispy }}
+                            </div>
+                            
+                            <!-- Supplier Information tab -->
+                            <div class="tab-pane fade" id="supplierInfo">
+                                {{ forms.supplier_information|crispy }}
+                            </div>
+                            
+                            <!-- Cargo Information tab -->
+                            <div class="tab-pane fade" id="cargoInfo">
+                                {{ forms.loose_cargo_information|crispy }}
+                            </div>
+                            
+                            <!-- Container Details tab -->
+                            <div class="tab-pane fade" id="containerInfo">
+                                {{ forms.container_details|crispy }}
+                            </div>
+                        </div>
+
+                        <!-- Navigation buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" id="prevBtn">Previous</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+                            <button type="submit" class="btn btn-success d-none" id="submitBtn">Save Job File</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick actions sidebar -->
+        <div class="col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h6 class="card-title mb-0">Quick Actions</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% include "erp/user_operations/contract/includes/quick_action_buttons.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include modals -->
+{% include 'erp/user_operations/contract/modals/master_data_modals.html' %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form navigation configuration
+    const formConfig = {
+        currentTab: 0,
+        tabs: Array.from(document.querySelectorAll('#formTabs .nav-link')),
+        panes: Array.from(document.querySelectorAll('.tab-pane')),
+        prevBtn: document.getElementById('prevBtn'),
+        nextBtn: document.getElementById('nextBtn'),
+        submitBtn: document.getElementById('submitBtn'),
+        progressBar: document.getElementById('progressBar')
+    };
+
+    // Initialize form navigation
+    function initializeFormNavigation() {
+        updateFormState();
+        setupEventListeners();
+    }
+
+    // Update form state based on current tab
+    function updateFormState() {
+        const {currentTab, tabs, panes, prevBtn, nextBtn, submitBtn, progressBar} = formConfig;
+        
+        // Update tabs
+        tabs.forEach((tab, index) => {
+            if (index === currentTab) {
+                tab.classList.add('active');
+                panes[index].classList.add('show', 'active');
+            } else {
+                tab.classList.remove('active');
+                panes[index].classList.remove('show', 'active');
+            }
+        });
+
+        // Update buttons
+        prevBtn.disabled = currentTab === 0;
+        if (currentTab === tabs.length - 1) {
+            nextBtn.classList.add('d-none');
+            submitBtn.classList.remove('d-none');
+        } else {
+            nextBtn.classList.remove('d-none');
+            submitBtn.classList.add('d-none');
+        }
+
+        // Update progress
+        const progress = ((currentTab + 1) / tabs.length) * 100;
+        progressBar.style.width = `${progress}%`;
+        progressBar.textContent = `Step ${currentTab + 1} of ${tabs.length}`;
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        const {prevBtn, nextBtn, tabs} = formConfig;
+
+        // Tab navigation
+        prevBtn.addEventListener('click', () => navigateTab('prev'));
+        nextBtn.addEventListener('click', () => navigateTab('next'));
+        
+        // Tab click handling
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateToTab(index);
+            });
+        });
+
+        // Form submission
+        setupFormSubmission();
+    }
+
+    // Navigate between tabs
+    function navigateTab(direction) {
+        if (direction === 'prev' && formConfig.currentTab > 0) {
+            formConfig.currentTab--;
+        } else if (direction === 'next' && formConfig.currentTab < formConfig.tabs.length - 1) {
+            formConfig.currentTab++;
+        }
+        updateFormState();
+    }
+
+    // Navigate to specific tab
+    function navigateToTab(index) {
+        if (index >= 0 && index < formConfig.tabs.length) {
+            formConfig.currentTab = index;
+            updateFormState();
+        }
+    }
+
+    // Handle form submission
+    function setupFormSubmission() {
+        const form = document.getElementById('jobFileForm');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            try {
+                loadingOverlay.classList.remove('d-none');
+                
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = data.redirect_url || '/';
+                } else {
+                    throw new Error(data.error || 'Form submission failed');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Error saving form: ' + error.message);
+            } finally {
+                loadingOverlay.classList.add('d-none');
+            }
+        });
+    }
+
+    // Initialize the form
+    initializeFormNavigation();
+});
+</script>
+{% endblock %}
