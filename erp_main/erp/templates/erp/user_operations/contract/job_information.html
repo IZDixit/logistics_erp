@@ -154,11 +154,11 @@
 
                 // Update the progress bar
                 const progress = ((currentTab + 1) / tabs.length) * 100;
-                progressBar.style.width = `${progress}%`;
-                progressBar.innerHTML = `Step ${currentTab + 1} of ${tabs.length}`;
+                formProgress.style.width = `${progress}%`;
+                formProgress.innerHTML = `Step ${currentTab + 1} of ${tabs.length}`;
             }
 
-            function SwitchTab(index) {
+            function switchTab(index) {
                 tabs.forEach(tab => tab.classList.remove('active'));
                 tabs[index].classList.add('active');
 
@@ -174,13 +174,13 @@
 
             prevBtn.addEventListener('click', () => {
                 if (currentTab > 0) {
-                    SwitchTab(currentTab - 1);
+                    switchTab(currentTab - 1);
                 }
             });
 
             nextBtn.addEventListener('click', () => {
                 if (currentTab < tabs.length - 1) {
-                    SwitchTab(currentTab + 1);
+                    switchTab(currentTab + 1);
                 }
             });
 
