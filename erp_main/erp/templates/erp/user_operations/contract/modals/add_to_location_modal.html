@@ -12,9 +12,9 @@
 
             <!--Modal Body-->
             <div class="modal-body">
-                <form method="POST" action="{% url '' %}" id="cargoTypeForm">
+                <form method="POST" action="{% url 'to_location' %}" id="toLocationForm">
                     {% csrf_token %}
-                    {{ cargo_type_form|crispy }}
+                    {{ to_location_form|crispy }}
 
 
                     <!--Form Buttons-->
